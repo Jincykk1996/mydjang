@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+<div col_sm_12>
+    <div class="col_sm_4">
+        {% for m in obj %}
+        <br><br>
+            {{ m.name }}
+        <br>
+            <img src="{{ m.image.url }}" alt=" ">
+        <br><br>
+    </div>
+</div>
+{% endfor %}
+</body>
+{% endblock content %}

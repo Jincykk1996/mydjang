@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% static "images" as baseUrl %}
+{% block content %}
+{% include 'carthead.html' %}
+<div class="super_container">
+	
+	
+
+	<!-- Header -->
+
+	<div class="super_container_inner">
+		<div class="super_overlay"></div>
+
+		<!-- Home -->
+
+		<div class="home">
+			<div class="home_container d-flex flex-column align-items-center justify-content-end">
+				<div class="home_content text-center">
+					<div class="home_title">Shopping Cart</div>
+					<div class="breadcrumbs d-flex flex-column align-items-center justify-content-center">
+						<ul class="d-flex flex-row align-items-start justify-content-start text-center">
+							<li><a href="#">Home</a></li>
+							<li>Your Cart</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Cart -->
+
+			<div class="cart_section">
+				<div class="container">
+					{% for o in u %}
+						<div class="row">
+							<div class="col">
+								<div class="cart_container">
+
+									<!-- Cart Bar -->
+									<div class="cart_bar">
+										<ul class="cart_bar_list item_list d-flex flex-row align-items-center justify-content-end">
+											<li class="mr-auto">Product</li>
+											{% if o.item.color %}
+												<li>Color</li>
+											{% endif %}
+											{% if o.item.size %}
+												<li>Size</li>
+											{% endif %}
+											<li>Price</li>
+											<li>Quantity</li>
+											<li>Total</li>
+										</ul>
+									</div>
+
+									<!-- Cart Items -->
+									<form action="{% url 'account:cont' o.id %}" method="post">
+										{% csrf_token %}
+										<div class="cart_items">
+											<ul class="cart_items_list">
+
+												<!-- Cart Item -->
+												<li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-end justify-content-start">
+													<div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start mr-auto">
+														<div><div class="product_number">{{ forloop.counter }}</div></div>
+														<div><div class="product_image"><img src="{{ o.item.image.url }}" alt=""></div></div>
+														<div class="product_name_container">
+															<div class="product_name"><a href="product.html">{{ o.item.name }}</a></div>
+															<div class="product_text">{{ o.item.description }}</div>
+														</div>
+													</div>
+													{% if o.item.color %}
+														<div class="product_color product_text"><span>Color: </span>{{ o.item.color }}
+														</div>
+													{% endif %}
+													{% if o.item.size %}
+														<div class="product_size product_text"><span>Size: </span>{{ o.item.size }}
+														</div>
+													{% endif %}
+													<div class="product_price product_text"><span>Price: </span>{{ o.item.price }}</div>
+													<div class="product_quantity_container">
+
+																<span class="product_text product_num">
+																	<input type="number" name="number" id="quantity_{{o.id}}" onkeyup="mul({{o.id}},{{o.item.price}})" value="{{ o.quantity }}">
+																</span>
+	<!--														<div class="qty_sub qty_button trans_200 text-center"><span>-</span></div>-->
+	<!--														<div class="qty_add qty_button trans_200 text-center"><span>+</span></div>-->
+
+													</div>
+													<div class="product_total product_text"   > <span>Total: </span><input type="number" disabled name="n" id="total_price{{o.id}}" value="{{ o.item.price }}"> </div>
+
+
+												</li>
+											</ul>
+										</div>
+
+										<!-- Cart Buttons -->
+										<div class="cart_buttons d-flex flex-row align-items-start justify-content-start">
+											<div class="cart_buttons_inner ml-sm-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
+												<div class="button button_clear trans_200"><a href="{% url 'account:delete' o.id %}">clear cart</a></div>
+												<div class="button button_continue trans_200"><a href="{% url 'account:index' %}">continue shopping</a></div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+						<div class="row cart_extra_row">
+							<div class="col-lg-6">
+								<div class="cart_extra cart_extra_1">
+									<div class="cart_extra_content cart_extra_coupon">
+										<div class="cart_extra_title">Coupon code</div>
+										<div class="coupon_form_container">
+
+												<input type="text" class="coupon_input" id="coupon" value=" ">
+												<button type="submit" class="coupon_button" onclick="cou()" >apply</button>
+										</div>
+
+										<div class="coupon_text">Phasellus sit amet nunc eros. Sed nec congue tellus. Aenean nulla nisl, volutpat blandit lorem ut.</div>
+										<div class="shipping">
+											<div class="cart_extra_title">Shipping Method</div>
+											<ul aria-required="true">
+												<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
+													<label class="radio_container">
+														<input type="radio" id="radio_1" onclick="shipping(1)" name="shipping_radio" class="shipping_radio">
+														<span class="radio_mark"></span>
+														<span class="radio_text">Next day delivery</span>
+													</label>
+													<div class="shipping_price ml-auto">500</div>
+												</li>
+												<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
+													<label class="radio_container">
+														<input type="radio" id="radio_2" onclick="shipping(2)" name="shipping_radio" class="shipping_radio">
+														<span class="radio_mark"></span>
+														<span class="radio_text">Standard delivery</span>
+													</label>
+													<div class="shipping_price ml-auto">100</div>
+												</li>
+												<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
+													<label class="radio_container">
+														<input type="radio" id="radio_3" onclick="shipping(3)" name="shipping_radio" class="shipping_radio" checked>
+														<span class="radio_mark"></span>
+														<span class="radio_text">Personal Pickup</span>
+													</label>
+													<div class="shipping_price ml-auto">Free</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 cart_extra_col">
+								<div class="cart_extra cart_extra_2">
+									<div class="cart_extra_content cart_extra_total">
+										<div class="cart_extra_title">Cart Total</div>
+										<ul class="cart_extra_total_list">
+											<li class="d-flex flex-row align-items-center justify-content-start">
+												<div class="cart_extra_total_title">Subtotal</div>
+												<div class="cart_extra_total_value ml-auto"><input type="number" disabled name="n" id="grandtotal" value="{{p}}"></div>
+											</li>
+
+												<li class="d-flex flex-row align-items-center justify-content-start">
+													<div class="cart_extra_total_title">Coupon offer</div>
+													<div class="cart_extra_total_value ml-auto"><input type="number" id="cup" disabled value="0"></div>
+												</li>
+
+											<li class="d-flex flex-row align-items-center justify-content-start">
+												<div class="cart_extra_total_title">Shipping</div>
+												<div class="cart_extra_total_value ml-auto"><input type="number" disabled name="shipping" id="ship" value="0"></div>
+											</li>
+											<li class="d-flex flex-row align-items-center justify-content-start">
+												<div class="cart_extra_total_title">Total</div>
+												<div class="cart_extra_total_value ml-auto"><input type="number" disabled name="n" id="total" value="{{p}}"></div>
+											</li>
+										</ul>
+										<div class="checkout_button trans_200"><a href="{% url 'account:checkout' %}">proceed to checkout</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+
+		<!-- Footer -->
+
+	</div>
+</div>
+
+<!--{% if ofr %}-->
+<!--	<script type="text/javascript">-->
+<!--		$(document).ready(function()-->
+<!--		{-->
+<!--		a= Number(document.getElementById('cup').value);-->
+<!--		b = Number(document.getElementById('total').value);-->
+<!--		c=a-b;-->
+<!--		alert(c)-->
+
+<!--	-->
+
+<!--		}-->
+
+
+<!--	</script>-->
+
+<!--{% endif %}-->
+	<script type="text/javascript"> function mul(id,p)
+		{
+			a = "quantity_"+id;
+			b = Number(document.getElementById(a).value);
+			price = p;
+			c = price*b;
+			totalp = "total_price"+id;
+			document.getElementById(totalp).value = c;
+			grandtotal = 0;
+			$('[id^=total_]') .each(function(){
+			grandtotal = grandtotal + parseInt($(this).val());
+			})
+			$("#grandtotal").val(grandtotal);
+			t="ship";
+
+			v = Number(document.getElementById(t).value);
+			gtotal = v+grandtotal;
+			$("#total").val(gtotal);
+		}
+
+		function shipping(id)
+		{
+			if(id==1)
+			{
+				document.getElementById('ship').value = 500;
+				t="grandtotal";
+				b = Number(document.getElementById(t).value);
+				total=b+500;
+				$("#total").val(total);
+			}
+			else if(id==2)
+			{
+				document.getElementById('ship').value = 100;
+				t="grandtotal"
+				b = Number(document.getElementById(t).value);
+				total=b+100;
+				$("#total").val(total);
+			}
+			else if(id==3)
+			{
+				document.getElementById('ship').value = 0;
+				t="grandtotal";
+				b = Number(document.getElementById(t).value);
+				total=b;
+				$("#total").val(total);
+			}
+		}
+
+	function cou()
+	{
+
+		a=document.getElementById('coupon').value;
+		alert(a)
+		if(a=='DROOL60')
+		{
+
+			t=100;
+
+			Number(document.getElementById('cup').value) = t;
+
+		}
+		else if(a=='BIGKERALA')
+		{
+			t=200;
+
+			Number(document.getElementById('cup').value) = t;
+		}
+		else
+		{
+			t=0;
+
+			Number(document.getElementById('cup').value) = t;
+		}
+	}
+	</script>
+
+{% endblock content %}

@@ -1,0 +1,33 @@
+{% extends 'bb.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+	<br>
+				  <h2>Register</h2>
+				  <form action=" " method="post">
+					{% csrf_token %}
+					<div class="form-group">
+					  <input type="text" class="form-control" placeholder="Enter user name" name="uname">
+					</div>
+					<div class="form-group">
+					  <input type="password" class="form-control" id="pwd1" placeholder="Enter password" name="pwd1">
+					</div>
+					<div class="form-group">
+					  <input type="password" class="form-control" id="pwd2" placeholder="Confirm password" name="pwd2">
+					</div>
+					<div class="form-group">
+					  	<input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+					</div>
+					<div class="checkbox">
+					  <label><input type="checkbox" name="remember"> Remember me</label>
+					</div>
+					 <div class="checkbox">
+					  <label><input type="submit" name="submit"></label>
+					</div>
+					  {% for m in messages %}
+							{{m}}
+					  {% endfor %}
+				  </form>
+	<br>
+</div>
+{% endblock content %}

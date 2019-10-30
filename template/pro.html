@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap-4.1.2/bootstrap.min.css' %}">
+
+</head>
+<body>
+<h1 align="center">Product details</h1><br>
+<div class="row">
+    <div class="col-sm-4" align="center">
+        <p>Title:{{o1.title}}</p>
+        <p>price:{{o1.price}}</p>
+        <p>offer:{{o1.offer}}</p>
+    </div>
+    <div class="col-sm-4" align="center">
+        <p>Title:{{o2.title}}</p>
+        <p>price:{{o2.price}}</p>
+        <p>offer:{{o2.offer}}</p>
+    </div>
+    <div class="col-sm-4" align="center">
+        <p>Title:{{o3.title}}</p>
+        <p>price:{{o3.price}}</p>
+        <p>offer:{{o3.offer}}</p>
+    </div>
+</div>
+
+<div class="row">
+    {% for objects in obj %}
+        <div class="col-sm-4" align="center">
+            <br>
+            <p>Title:{{objects.title}}</p>
+            <p>price:{{objects.price}}</p>
+            <p>offer:{{objects.offer}}</p>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+</body>
+</html>
